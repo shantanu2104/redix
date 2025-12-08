@@ -5,6 +5,8 @@ import Home from './pages/Home'
 import AboutUs from './pages/AboutUs'
 import ContactUs from './pages/ContactUs'
 import Cars from './pages/Cars'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
     <Route path='/about' element={<AboutUs/>}/>
     <Route path='/contact' element={<ContactUs/>}/>
     <Route path='/viewcars' element={<Cars/>}/>
+    <Route path='/login' element={<Login/>}/>
+    <Route path='/signup' element={<Signup/>}/>
   </Routes>
   </BrowserRouter>
   )

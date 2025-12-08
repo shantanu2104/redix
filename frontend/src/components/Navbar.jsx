@@ -1,13 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
-  const isLoggedIn = false;
+  const { loggedin, setLoggedin } = useContext(AuthContext); 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setLoggedin(false);  // instantly updates Navbar
+    navigate("/login");
+  };
 
   return (
     <nav
       className="px-6 py-3 shadow-lg"
-      style={{ backgroundColor: "#603808" }} // darkest shade
+      style={{ backgroundColor: "#603808" }}
     >
       <div className="flex items-center justify-between">
 
@@ -20,50 +31,33 @@ export default function Navbar() {
           />
           <h1
             className="text-2xl font-bold"
-            style={{ color: "#FFEDD8" }} // lightest shade
+            style={{ color: "#FFEDD8" }}
           >
             Ridex
           </h1>
         </div>
 
-        {/* Menu (NO MAP USED) */}
+        {/* Menu */}
         <div className="hidden md:flex items-center gap-8 text-lg">
-          <Link
-            to="/"
-            className="hover:underline"
-            style={{ color: "#F3D5B5" }}
-          >
+          <Link to="/" className="hover:underline" style={{ color: "#F3D5B5" }}>
             Home
           </Link>
 
-          <Link
-            to="/about"
-            className="hover:underline"
-            style={{ color: "#F3D5B5" }}
-          >
+          <Link to="/about" className="hover:underline" style={{ color: "#F3D5B5" }}>
             About
           </Link>
 
-          <Link
-            to="/viewcars"
-            className="hover:underline"
-            style={{ color: "#F3D5B5" }}
-          >
+          <Link to="/viewcars" className="hover:underline" style={{ color: "#F3D5B5" }}>
             View Cars
           </Link>
 
-          <Link
-            to="/contact"
-            className="hover:underline"
-            style={{ color: "#F3D5B5" }}
-          >
+          <Link to="/contact" className="hover:underline" style={{ color: "#F3D5B5" }}>
             Contact Us
           </Link>
         </div>
 
-        {/* Search + Login */}
+        {/* Search + Buttons */}
         <div className="flex items-center gap-4">
-
           <input
             type="text"
             placeholder="Search cars..."
@@ -74,13 +68,25 @@ export default function Navbar() {
             }}
           />
 
-          {isLoggedIn ? (
-            <button
-              className="px-4 py-1 rounded-lg font-medium"
-              style={{ backgroundColor: "#A47148", color: "white" }}
-            >
-              Logout
-            </button>
+          {/* If logged in → Show Cart + Logout */}
+          {loggedin ? (
+            <>
+              <Link
+                to="/cart"
+                className="px-4 py-1 rounded-lg font-medium"
+                style={{ backgroundColor: "#D4A276", color: "#603808" }}
+              >
+                Cart 🛒
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="px-4 py-1 rounded-lg font-medium"
+                style={{ backgroundColor: "#A47148", color: "white" }}
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Link
               to="/login"

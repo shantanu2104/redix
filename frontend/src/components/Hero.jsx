@@ -32,11 +32,11 @@ export default function HeroSection() {
         {/* CTA Buttons */}
         <div className="flex gap-4 mt-4">
           <Link
-            to="/about"
+            to="/signup"
             className="px-6 py-3 rounded-xl font-semibold shadow-lg hover:scale-105 transition"
             style={{ backgroundColor: "#D4A276", color: "#603808" }}
           >
-            About Us
+            SignUp
           </Link>
 
           <Link
