@@ -50,7 +50,7 @@ export default function Navbar() {
           <Link to="/viewcars" className="hover:underline" style={{ color: "#F3D5B5" }}>
             View Cars
           </Link>
-
+         
           <Link to="/contact" className="hover:underline" style={{ color: "#F3D5B5" }}>
             Contact Us
           </Link>

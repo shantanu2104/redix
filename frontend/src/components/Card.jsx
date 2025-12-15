@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
+import { useCart } from "../context/CartContext";
 
-export default function CarCard({ car }) {
+export default function Card({ car: newCar }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+
+  const { addToCart, cart,  decreaseQty } = useCart();
+
+  // Find if newCar is already in cart
+  const cartItem = cart.find((item) => item.car._id === newCar._id);
+  const qty = cartItem ? cartItem.qty : 0;
 
   const handleBooking = () => {
     if (!startDate || !endDate) {
@@ -11,8 +18,15 @@ export default function CarCard({ car }) {
       return;
     }
 
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (start >= end) {
+    alert("End date must be after start date.");
+    return;
+  }
     console.log({
-      carId: car._id,
+      carId: newCar._id,
       startDate,
       endDate,
     });
@@ -21,51 +35,40 @@ export default function CarCard({ car }) {
   return (
     <div
       className="rounded-xl shadow-md p-4 flex flex-col gap-4"
-      style={{
-        backgroundColor: "#FFEDD8",
-        border: "1px solid #E7BC91",
-      }}
+      style={{ backgroundColor: "#FFEDD8", border: "1px solid #E7BC91" }}
     >
-      {/* Car Image */}
       <img
-        src={car.imageUrl}
-        alt={car.name}
+        src={newCar.imageUrl}
+        alt={newCar.name}
         className="w-full h-48 object-cover rounded-lg"
       />
 
-      {/* Car Name + Rating */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold" style={{ color: "#6F4518" }}>
-          {car.name}
+          {newCar.name}
         </h2>
-
         <div className="flex items-center gap-1">
-          <Star size={20} color="#D4A276" fill="#D4A276" />
-          <span style={{ color: "#8B5E34" }}>{car.rating}</span>
+          <Star size={20} color="gold" fill="#D4A276" />
+          <span style={{ color: "#8B5E34" }}>{newCar.rating}</span>
         </div>
       </div>
 
-      {/* Pricing */}
       <div className="text-sm" style={{ color: "#8B5E34" }}>
         <p>
-          <strong>₹{car.pricePerDay}</strong> / day
+          <strong>₹{newCar.pricePerDay}</strong> / day
         </p>
         <p>
-          <strong>₹{car.pricePerHour}</strong> / hour
+          <strong>₹{newCar.pricePerHour}</strong> / hour
         </p>
       </div>
 
-      {/* Availability */}
       <p
         className="text-sm font-semibold"
-        style={{
-          color: car.isAvailable ? "#6F4518" : "red",
-        }}
+        style={{ color: newCar.isAvailable ? "#6F4518" : "red" }}
       >
-        {car.isAvailable ? "Available" : "Not Available"}
+        {newCar.isAvailable ? "Available" : "Not Available"}
       </p>
 
-      {/* Date Selection */}
       <div className="flex flex-col gap-2">
         <label className="text-sm" style={{ color: "#6F4518" }}>
           Start Date:
@@ -75,10 +78,7 @@ export default function CarCard({ car }) {
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
           className="px-3 py-2 rounded-lg border"
-          style={{
-            borderColor: "#BC8A5F",
-            color: "#603808",
-          }}
+          style={{ borderColor: "#BC8A5F", color: "#603808" }}
         />
 
         <label className="text-sm" style={{ color: "#6F4518" }}>
@@ -89,24 +89,45 @@ export default function CarCard({ car }) {
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
           className="px-3 py-2 rounded-lg border"
-          style={{
-            borderColor: "#BC8A5F",
-            color: "#603808",
-          }}
+          style={{ borderColor: "#BC8A5F", color: "#603808" }}
         />
       </div>
 
-      {/* Book Button */}
       <button
         onClick={handleBooking}
         className="mt-2 py-2 rounded-lg font-semibold hover:scale-105 transition"
-        style={{
-          backgroundColor: "#D4A276",
-          color: "#603808",
-        }}
+        style={{ backgroundColor: "#D4A276", color: "#603808" }}
       >
         Book Now
       </button>
+
+      {/* Quantity Buttons */}
+      <div className="flex items-center justify-between mt-2">
+        <button
+          onClick={() => decreaseQty(newCar._id)}
+          className="px-4 py-2 rounded-lg font-bold"
+          style={{
+            backgroundColor: "#E7BC91",
+            color: "#603808",
+            opacity: qty > 0 ? 1 : 0.4,
+          }}
+          disabled={qty === 0}
+        >
+          -
+        </button>
+
+        <span className="font-bold text-lg" style={{ color: "#6F4518" }}>
+          {qty}
+        </span>
+
+        <button
+          onClick={() => addToCart(newCar._id)}
+          className="px-4 py-2 rounded-lg font-bold"
+          style={{ backgroundColor: "#BC8A5F", color: "white" }}
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 }

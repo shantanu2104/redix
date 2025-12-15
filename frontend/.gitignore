@@ -1,4 +1,4 @@
-# Logs
+# ================= Logs =================
 logs
 *.log
 npm-debug.log*
@@ -7,18 +7,38 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# ================= Dependencies =================
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# ================= Build Outputs =================
 dist
 dist-ssr
-*.local
+build
+frontend/dist
+backend/dist
 
-# Editor directories and files
+# ================= Environment Variables (IMPORTANT) =================
+.env
+.env.*
+backend/.env
+frontend/.env
+
+# ================= Local / OS Files =================
+*.local
+.DS_Store
+Thumbs.db
+
+# ================= Editor / IDE =================
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# ================= Optional =================
+coverage
